@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lofi Beats · FreeBeat.in</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      .card-img-top {
+        height: 200px;          /* fixed height */
+        object-fit: cover;      /* crops and fills without stretching */
+      }
+      .card {
+        height: 100%;           /* keeps all cards equal height */
+      }
+    </style>
+
+  </head>
+  <body>
+    <header data-bs-theme="dark">
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <a href="newindex.html" class="navbar-brand d-flex align-items-center">
+            <strong>FreeBeat.in</strong>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Lofi Beats</h1>
+            <p>Browse and download 20 free lofi beats. Click <b>Preview</b> to listen or <b>Download</b> to save the file.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Songs Grid -->
+      <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4" id="songsContainer"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="text-body-secondary py-5">
+      <div class="container">
+        <p class="mb-0">&copy; 2025 <a href="/" class="text-decoration-none">FreeBeat.in</a></p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Song list (replace Supabase links + cover images)
+      const songs = [
+        { title: "Clouds", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/clouds.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/130f9064280b04528a96611e7fde3204.jpg" },
+        { title: "Disappear", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/Disappear.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/149d24dcb8d8a8a30f4583b2d78a1da8.jpg" },
+        { title: "Dreams", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/dreams.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/51d62dc75b1a6d6c0f4562676e90e8c1.jpg" },
+        { title: "Forever", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/forever.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/73e570aa1900982b0d57982089738689.jpg" },
+        { title: "Green", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/green.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/93efa31936b40ab360a49fc1a92bae4a.jpg" },
+        { title: "Lights", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/lights.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/Disappear.jpg" },
+        { title: "Sateite", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/satelite.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/dreams.jpg" },
+        { title: "Skies", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/skies.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/satelite.jpg" },
+        { title: "U&I", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/U&I.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/U&I.jpg" },
+        { title: "Clouds", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/clouds.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/130f9064280b04528a96611e7fde3204.jpg" },
+        { title: "Disappear", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/Disappear.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/149d24dcb8d8a8a30f4583b2d78a1da8.jpg" },
+        { title: "Dreams", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/dreams.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/51d62dc75b1a6d6c0f4562676e90e8c1.jpg" },
+        { title: "Forever", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/forever.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/73e570aa1900982b0d57982089738689.jpg" },
+        { title: "Green", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/green.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/93efa31936b40ab360a49fc1a92bae4a.jpg" },
+        { title: "Lights", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/lights.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/Disappear.jpg" },
+        { title: "Sateite", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/satelite.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/dreams.jpg" },
+        { title: "Skies", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/skies.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/satelite.jpg" },
+        { title: "U&I", file: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/music-files/U&I.mp3", cover: "https://ebjcbdycixisratsmcri.supabase.co/storage/v1/object/public/cover-images/U&I.jpg" },
+        { title: "Beat 10", file: "https://your-supabase-link/beat10.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+10" },
+        { title: "Beat 11", file: "https://your-supabase-link/beat11.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+11" },
+        { title: "Beat 12", file: "https://your-supabase-link/beat12.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+12" },
+        { title: "Beat 13", file: "https://your-supabase-link/beat13.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+13" },
+        { title: "Beat 14", file: "https://your-supabase-link/beat14.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+14" },
+        { title: "Beat 15", file: "https://your-supabase-link/beat15.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+15" },
+        { title: "Beat 16", file: "https://your-supabase-link/beat16.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+16" },
+        { title: "Beat 17", file: "https://your-supabase-link/beat17.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+17" },
+        { title: "Beat 18", file: "https://your-supabase-link/beat18.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+18" },
+        { title: "Beat 19", file: "https://your-supabase-link/beat19.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+19" },
+        { title: "Beat 20", file: "https://your-supabase-link/beat20.mp3", cover: "https://via.placeholder.com/300x200?text=Beat+20" }
+      ];
+
+      const container = document.getElementById("songsContainer");
+
+      songs.forEach((song, index) => {
+        container.innerHTML += `
+          <div class="col">
+            <div class="card shadow-sm h-100">
+              <img src="${song.cover}" class="card-img-top" alt="${song.title}">
+              <div class="card-body text-center">
+                <h5 class="card-title">${song.title}</h5>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#previewModal${index}">
+                    Preview
+                  </button>
+                  <a href="${song.file}" class="btn btn-sm btn-outline-success" download>Download</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="previewModal${index}" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">${song.title}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                  <audio controls>
+                    <source src="${song.file}" type="audio/mpeg">
+                    Your browser does not support the audio tag.
+                  </audio>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    </script>
+  </body>
+</html>
